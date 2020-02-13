@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Pipelinie.Tests
 {
-    public class PipelieTests
+    public class PipelineTests
     {
         [Test]
         public async Task ExecutePipeline_SingleStepInPipeline_CallsStep()
