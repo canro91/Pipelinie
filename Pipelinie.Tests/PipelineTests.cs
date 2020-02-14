@@ -94,8 +94,5 @@ namespace Pipelinie.Tests
 
     public class BuyItemCommand : ICommand
     {
-        public BuyItemCommand()
-        {
-        }
     }
 }
