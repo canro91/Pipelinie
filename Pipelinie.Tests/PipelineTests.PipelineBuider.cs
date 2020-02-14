@@ -8,7 +8,7 @@ namespace Pipelinie.Tests
     public class PipelineTestsPipelineBuilder
     {
         [Test]
-        public async Task CreatePipeline_StepWithSingleDependency_ResolvesStepWithServiceProvider()
+        public void CreatePipeline_StepWithSingleDependency_ResolvesStepWithServiceProvider()
         {
             var serviceProvider = new ServiceCollection()
                                     .AddTransient<ICustomService, CustomService>()
@@ -19,15 +19,16 @@ namespace Pipelinie.Tests
             var builder = new BuyItemSingleStepPipelineBuilder(serviceProvider);
             var pipeline = builder.CreatePipeline(command);
 
-            await pipeline.ExecuteAsync();
+            Assert.IsNotNull(pipeline);
         }
 
         [Test]
-        public async Task CreatePipeline_StepWithMultipleDependencies_ResolveStepWithServiceProvider()
+        public void CreatePipeline_StepWithMultipleDependencies_ResolveStepWithServiceProvider()
         {
             var serviceProvider = new ServiceCollection()
                                     .AddTransient<ICustomService, CustomService>()
                                     .AddTransient<ICustomServiceB, CustomServiceB>()
+                                    .AddTransient<StepWithSingleDependency>()
                                     .AddTransient<StepWithMultipleDependencies>()
                                     .BuildServiceProvider();
 
@@ -35,7 +36,7 @@ namespace Pipelinie.Tests
             var builder = new BuyItemMultipleStepsPipelineBuilder(serviceProvider);
             var pipeline = builder.CreatePipeline(command);
 
-            await pipeline.ExecuteAsync();
+            Assert.IsNotNull(pipeline);
         }
 
         [Test]
