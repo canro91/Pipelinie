@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pipelinie.Tests
@@ -18,8 +16,8 @@ namespace Pipelinie.Tests
                                     .BuildServiceProvider();
 
             var command = new BuyItemCommand();
-            var builder = new BuyItemSingleStepPipelineBuilder(serviceProvider, command);
-            var pipeline = builder.CreatePipeline();
+            var builder = new BuyItemSingleStepPipelineBuilder(serviceProvider);
+            var pipeline = builder.CreatePipeline(command);
 
             await pipeline.ExecuteAsync();
         }
@@ -34,8 +32,8 @@ namespace Pipelinie.Tests
                                     .BuildServiceProvider();
 
             var command = new BuyItemCommand();
-            var builder = new BuyItemMultipleStepsPipelineBuilder(serviceProvider, command);
-            var pipeline = builder.CreatePipeline();
+            var builder = new BuyItemMultipleStepsPipelineBuilder(serviceProvider);
+            var pipeline = builder.CreatePipeline(command);
 
             await pipeline.ExecuteAsync();
         }
@@ -49,22 +47,17 @@ namespace Pipelinie.Tests
                                     .BuildServiceProvider();
 
             var command = new BuyItemCommand();
-            var builder = new BuyItemSingleStepPipelineBuilder(serviceProvider, command);
+            var builder = new BuyItemSingleStepPipelineBuilder(serviceProvider);
 
-            Assert.Throws<InvalidOperationException>(() => builder.CreatePipeline());
+            Assert.Throws<InvalidOperationException>(() => builder.CreatePipeline(command));
         }
     }
 
     internal class BuyItemSingleStepPipelineBuilder : PipelineBuilderBase<BuyItemCommand>
     {
-        private readonly BuyItemCommand Command;
-        private readonly IServiceProvider Provider;
-
-        public BuyItemSingleStepPipelineBuilder(IServiceProvider provider, BuyItemCommand command)
+        public BuyItemSingleStepPipelineBuilder(IServiceProvider provider)
             : base(provider)
         {
-            Provider = provider;
-            Command = command;
         }
 
         protected override Type[] StepsTypes
@@ -72,23 +65,13 @@ namespace Pipelinie.Tests
             {
                 typeof(StepWithSingleDependency),
             };
-
-        protected override IPipeline Factory(IEnumerable<IStep<BuyItemCommand>> steps)
-        {
-            return new BuyItemPipeline(Command, steps.ToArray());
-        }
     }
 
     internal class BuyItemMultipleStepsPipelineBuilder : PipelineBuilderBase<BuyItemCommand>
     {
-        private readonly BuyItemCommand Command;
-        private readonly IServiceProvider Provider;
-
-        public BuyItemMultipleStepsPipelineBuilder(IServiceProvider provider, BuyItemCommand command)
+        public BuyItemMultipleStepsPipelineBuilder(IServiceProvider provider)
             : base(provider)
         {
-            Provider = provider;
-            Command = command;
         }
 
         protected override Type[] StepsTypes
@@ -97,11 +80,6 @@ namespace Pipelinie.Tests
                 typeof(StepWithSingleDependency),
                 typeof(StepWithMultipleDependencies)
             };
-
-        protected override IPipeline Factory(IEnumerable<IStep<BuyItemCommand>> steps)
-        {
-            return new BuyItemPipeline(Command, steps.ToArray());
-        }
     }
 
     internal class StepWithSingleDependency : IStep<BuyItemCommand>

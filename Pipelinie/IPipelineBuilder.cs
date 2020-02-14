@@ -1,7 +1,7 @@
 ﻿namespace Pipelinie
 {
-    public interface IPipelineBuilder
+    public interface IPipelineBuilder<T> where T : ICommand
     {
-        IPipeline CreatePipeline();
+        IPipeline CreatePipeline(T command);
     }
 }

@@ -10,8 +10,8 @@ namespace Pipelinie.Tests
         {
             var command = new BuyItemCommand();
             var updateStockStep = new UpdateStockStep();
-            var builder = new BuyItemPipelineBuilder(command, updateStockStep);
-            var pipeline = builder.CreatePipeline();
+            var builder = new BuyItemPipelineBuilder(updateStockStep);
+            var pipeline = builder.CreatePipeline(command);
 
             await pipeline.ExecuteAsync();
 
@@ -25,8 +25,8 @@ namespace Pipelinie.Tests
             var updateStockStep = new UpdateStockStep();
             var chargeCreditCardStep = new ChargeCreditCard();
             var steps = new IStep<BuyItemCommand>[] { updateStockStep, chargeCreditCardStep };
-            var builder = new BuyItemPipelineBuilder(command, steps);
-            var pipeline = builder.CreatePipeline();
+            var builder = new BuyItemPipelineBuilder(steps);
+            var pipeline = builder.CreatePipeline(command);
 
             await pipeline.ExecuteAsync();
 
@@ -57,20 +57,18 @@ namespace Pipelinie.Tests
         }
     }
 
-    internal class BuyItemPipelineBuilder : IPipelineBuilder
+    internal class BuyItemPipelineBuilder : IPipelineBuilder<BuyItemCommand>
     {
-        private readonly BuyItemCommand Command;
         private readonly IStep<BuyItemCommand>[] Steps;
 
-        public BuyItemPipelineBuilder(BuyItemCommand command, params IStep<BuyItemCommand>[] steps)
+        public BuyItemPipelineBuilder(params IStep<BuyItemCommand>[] steps)
         {
-            Command = command;
             Steps = steps;
         }
 
-        public IPipeline CreatePipeline()
+        public IPipeline CreatePipeline(BuyItemCommand command)
         {
-            return new BuyItemPipeline(Command, Steps);
+            return new BuyItemPipeline(command, Steps);
         }
     }
 
