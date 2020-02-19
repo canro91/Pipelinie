@@ -1,6 +1,6 @@
 # Pipelinie
 
-Pipelinie offers abstractions to build pipelines. You could use pipelines to perform complex tasks through a set of steps. For example, make a reservation, generate an invoice or create an order.
+Pipelinie offers abstractions to build pipelines. You could use pipelines to perform complex tasks through a set of steps. For example, make a reservation, generate an invoice or create an order. You could read more about the Pipeline pattern [here](https://canro91.github.io/2020/02/14/PipelinePattern/)
 
 ## Usage
 
