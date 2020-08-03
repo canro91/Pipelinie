@@ -1,6 +1,6 @@
 # Pipelinie
 
-Pipelinie offers abstractions to build pipelines. You could use pipelines to perform complex tasks through a set of steps. For example, make a reservation, generate an invoice or create an order. You could read more about the Pipeline pattern [here](https://canro91.github.io/2020/02/14/PipelinePattern/)
+Pipelinie offers abstractions to build pipelines. You could use pipelines to perform complex tasks through a set of separate steps. For example, make a reservation, generate an invoice or create an order. You could read more about the Pipeline pattern in [Pipeline pattern: Perform tasks with an assembly line of steps](https://canro91.github.io/2020/02/14/PipelinePattern/)
 
 ## Usage
 
@@ -18,50 +18,50 @@ Pipelinie uses four entities:
 ```csharp
 public class BuyItemCommand : ICommand
 {
-	// Number of items, Customer name, etc
+    // Number of items, Customer name, etc
 }
 ```
 
-2. Create a `PipelineBuilder`. You could load the definition of your steps from a db, config files or anywhere else. Pipelinie has a base implementation to load your steps from Asp.Net Core default dependency container. This base implementation uses a default pipeline.
+2. Create a `PipelineBuilder`. You could load the definition of your steps from a db, config files or anywhere else. Pipelinie has a base implementation to load your steps from ASP.NET Core default dependency container. This base implementation uses a default pipeline.
 
 ```csharp
 public class BuyItemPipelineBuilder : PipelineBuilderBase<BuyItemCommand>
 {
-	public BuyItemSingleStepPipelineBuilder(IServiceProvider provider)
-		: base(provider)
-	{
-	}
+    public BuyItemSingleStepPipelineBuilder(IServiceProvider provider)
+        : base(provider)
+    {
+    }
 
-	protected override Type[] StepsTypes
-		=> new[]
-		{
-			typeof(UpdateStockStep),
-			typeof(ChargeCreditCardStep)
-		};
+    protected override Type[] StepsTypes
+        => new[]
+        {
+            typeof(UpdateStockStep),
+            typeof(ChargeCreditCardStep)
+        };
 }
 ```
 
-You can create a pipeline to suit your own needs. In that case, you need to create a builder to return the custom pipeline. Take a look at the tests to see more example to create custom pipelines and builders.
+You can create a pipeline to suit your own needs. In that case, you need to create a builder to return the custom pipeline. Take a look at the [tests](https://github.com/canro91/Pipelinie/tree/master/Pipelinie.Tests) to see more examples to create custom pipelines and builders.
 
 3. Create individual steps per each operation in your pipeline
 
 ```csharp
 public class UpdateStockStep : IStep<BuyItemCommand>
 {
-	public Task ExecuteAsync(BuyItemCommand command)
-	{
-		// Put your own logic here
-		return Task.CompletedTask;
-	}
+    public Task ExecuteAsync(BuyItemCommand command)
+    {
+        // Put your own logic here
+        return Task.CompletedTask;
+    }
 }
 
 public class ChargeCreditCardStep : IStep<BuyItemCommand>
 {
-	public Task ExecuteAsync(BuyItemCommand command)
-	{
-		// Put your own logic here
-		return Task.CompletedTask;
-	}
+    public Task ExecuteAsync(BuyItemCommand command)
+    {
+        // Put your own logic here
+        return Task.CompletedTask;
+    }
 }
 ```
 
