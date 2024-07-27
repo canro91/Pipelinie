@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pipelinie", "Pipelinie\Pipelinie.csproj", "{677D66E3-0E44-4AAC-9DE8-A64516C0B146}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pipelinie", "Pipelinie\Pipelinie.csproj", "{677D66E3-0E44-4AAC-9DE8-A64516C0B146}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pipelinie.Tests", "Pipelinie.Tests\Pipelinie.Tests.csproj", "{7EA9F16A-1A24-4AA6-A556-C54187B24BC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pipelinie.Tests", "Pipelinie.Tests\Pipelinie.Tests.csproj", "{7EA9F16A-1A24-4AA6-A556-C54187B24BC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
